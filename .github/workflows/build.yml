@@ -15,6 +15,7 @@ jobs:
       - name: Build APK
         run: |
           export BUILD_OZDROID=1
+          # Собираем только одну архитектуру (ARM64) вместо двух
           yes | buildozer android debug
 
       - name: Upload APK
