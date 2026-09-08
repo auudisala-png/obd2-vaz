@@ -14,9 +14,7 @@ android.api = 30
 android.minapi = 21
 android.ndk = 25b
 android.arch = arm64-v8a
+android.skip_python_tests = True
 
 android.gradle_dependencies = 'com.android.support:support-annotations:28.0.0'
 android.accept_sdk_license = True
-
-# ⚠️ ГЛАВНОЕ: Отключаем тесты Python
-android.skip_python_tests = True
