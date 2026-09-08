@@ -4,7 +4,7 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout
@@ -19,11 +19,6 @@ jobs:
             libncurses5-dev libncursesw5-dev libtinfo5 \
             cmake libffi-dev libssl-dev
 
-      - name: Clean Buildozer cache
-        run: |
-          rm -rf ~/.buildozer/android/packages
-          rm -rf ~/.buildozer/android/platform
-
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -32,10 +27,10 @@ jobs:
       - name: Install Buildozer
         run: |
           pip install --upgrade pip
-          pip install --no-cache-dir buildozer cython==0.29.33
+          pip install buildozer cython
 
       - name: Build APK
-        run: buildozer android debug --verbose
+        run: buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
