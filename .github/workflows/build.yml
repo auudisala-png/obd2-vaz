@@ -4,7 +4,7 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout
@@ -16,7 +16,7 @@ jobs:
           sudo apt-get install -y \
             git zip unzip openjdk-17-jdk python3-pip \
             autoconf libtool pkg-config zlib1g-dev \
-            libncurses5-dev libncursesw5-dev \
+            libncurses5-dev libncursesw5-dev libtinfo5 \
             cmake libffi-dev libssl-dev
 
       - name: Setup Python
@@ -29,13 +29,20 @@ jobs:
           pip install --upgrade pip
           pip install buildozer cython
 
-      - name: Clean Cache
+      - name: Force NDK 25b
         run: |
+          # Удаляем старый NDK
+          rm -rf ~/.buildozer/android/platform/android-ndk-r23b
+          rm -rf ~/.buildozer/android/platform/android-ndk-r25b
+          # Удаляем кэш
           rm -rf ~/.buildozer/android/platform/build*
           rm -rf ~/.buildozer/android/platform/python-for-android
 
       - name: Build APK
-        run: buildozer android debug
+        run: |
+          # Принудительно указываем NDK 25b
+          export ANDROIDNDK=/home/runner/.buildozer/android/platform/android-ndk-r25b
+          buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
