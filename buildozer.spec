@@ -13,6 +13,7 @@ android.permissions = INTERNET,BLUETOOTH,BLUETOOTH_ADMIN,BLUETOOTH_CONNECT,BLUET
 android.api = 30
 android.minapi = 21
 android.ndk = 25b
+android.arch = arm64-v8a
 
 android.gradle_dependencies = 'com.android.support:support-annotations:28.0.0'
 android.accept_sdk_license = True
