@@ -13,7 +13,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build APK
-        run: buildozer android debug
+        run: |
+          # Отключаем проверку root
+          export BUILD_OZDROID=1
+          yes | buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
