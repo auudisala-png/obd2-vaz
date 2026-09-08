@@ -24,15 +24,6 @@ jobs:
           rm -rf ~/.buildozer/android/packages
           rm -rf ~/.buildozer/android/platform
 
-      - name: Accept Android Licenses
-        run: |
-          mkdir -p /home/runner/.android/licenses
-          echo "8933bad161af4178b1185d1a37fbf41ea5269c55" > /home/runner/.android/licenses/android-sdk-license
-          echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> /home/runner/.android/licenses/android-sdk-license
-          echo "84831b9409646a918e30573bab4c9c91346d8abd" >> /home/runner/.android/licenses/android-sdk-license
-          echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" >> /home/runner/.android/licenses/android-sdk-license
-          echo "Licenses accepted"
-
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -41,7 +32,7 @@ jobs:
       - name: Install Buildozer
         run: |
           pip install --upgrade pip
-          pip install buildozer cython==0.29.33
+          pip install --no-cache-dir buildozer cython==0.29.33
 
       - name: Build APK
         run: buildozer android debug --verbose
