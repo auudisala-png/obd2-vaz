@@ -1,19 +1,44 @@
-[app]
-title = OBD2 ВАЗ
-package.name = obd2vaz
-package.domain = org.yourdomain
+name: Build APK
 
-source.dir = .
-source.include_exts = py,png,jpg,kv,atlas
+on: [push, workflow_dispatch]
 
-version = 0.1
-requirements = python3,kivy==2.1.0
+jobs:
+  build:
+    runs-on: ubuntu-22.04
 
-android.permissions = INTERNET,BLUETOOTH
-android.api = 30
-android.minapi = 21
-android.ndk = 25b
-android.accept_sdk_license = True
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-[buildozer]
-log_level = 2
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            git zip unzip openjdk-17-jdk python3-pip \
+            autoconf libtool pkg-config zlib1g-dev \
+            libncurses5-dev libncursesw5-dev libtinfo5 \
+            cmake libffi-dev libssl-dev
+
+      - name: Clean Buildozer cache
+        run: |
+          rm -rf ~/.buildozer/android/packages
+          rm -rf ~/.buildozer/android/platform
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Buildozer
+        run: |
+          pip install --upgrade pip
+          pip install --no-cache-dir buildozer cython==0.29.33
+
+      - name: Build APK
+        run: buildozer android debug --verbose
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: obd2-apk
+          path: bin/*.apk
