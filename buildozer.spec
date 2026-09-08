@@ -12,7 +12,7 @@ requirements = python3,kivy,jnius
 android.permissions = INTERNET,BLUETOOTH,BLUETOOTH_ADMIN,BLUETOOTH_CONNECT,BLUETOOTH_SCAN,ACCESS_FINE_LOCATION
 android.api = 30
 android.minapi = 21
-android.ndk = 23b
+android.ndk = 25b
 
 android.gradle_dependencies = 'com.android.support:support-annotations:28.0.0'
 android.accept_sdk_license = True
