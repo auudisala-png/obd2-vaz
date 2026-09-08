@@ -15,8 +15,13 @@ jobs:
       - name: Build APK
         run: |
           export BUILD_OZDROID=1
-          # Собираем только одну архитектуру (ARM64) вместо двух
-          yes | buildozer android debug
+          yes | buildozer android debug 2>&1 | tee build.log
+          # Если сборка упала, показать последние 200 строк лога
+          if [ $? -ne 0 ]; then
+            echo "=== LAST 200 LINES OF BUILD LOG ==="
+            tail -200 build.log
+            exit 1
+          fi
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
