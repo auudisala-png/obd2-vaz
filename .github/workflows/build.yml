@@ -4,7 +4,7 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest    # <--- заменил с ubuntu-20.04
 
     steps:
       - name: Checkout
@@ -16,7 +16,7 @@ jobs:
           sudo apt-get install -y \
             git zip unzip openjdk-17-jdk python3-pip \
             autoconf libtool pkg-config zlib1g-dev \
-            libncurses5-dev libncursesw5-dev libtinfo5 \
+            libncurses5-dev libncursesw5-dev \
             cmake libffi-dev libssl-dev
 
       - name: Setup Python
@@ -31,16 +31,13 @@ jobs:
 
       - name: Remove Python tests BEFORE build
         run: |
-          # Удаляем тесты из системы (жестко)
           sudo rm -rf /usr/lib/python3.9/test
           sudo rm -rf /usr/lib/python3.9/lib-dynload/test
           sudo rm -rf /usr/lib/python3.9/unittest
-          # Чистим кэш Buildozer
           rm -rf ~/.buildozer/android/platform/build-*/build/other_builds/python3
 
       - name: Build APK
         run: |
-          # Принудительно удаляем тесты внутри сборки
           export PYTHONHASHSEED=0
           buildozer android debug
 
