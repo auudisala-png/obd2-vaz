@@ -18,5 +18,5 @@ android.arch = arm64-v8a
 android.gradle_dependencies = 'com.android.support:support-annotations:28.0.0'
 android.accept_sdk_license = True
 
-# Отключаем тесты Python (экономит время и память)
+# ⚠️ ГЛАВНОЕ: Отключаем тесты Python
 android.skip_python_tests = True
