@@ -7,9 +7,9 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 
 version = 0.1
-requirements = python3,kivy,jnius
+requirements = python3,kivy==2.1.0
 
-android.permissions = INTERNET,BLUETOOTH,BLUETOOTH_ADMIN,BLUETOOTH_CONNECT,BLUETOOTH_SCAN,ACCESS_FINE_LOCATION
+android.permissions = INTERNET,BLUETOOTH
 android.api = 30
 android.minapi = 21
 android.ndk = 25b
