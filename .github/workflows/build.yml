@@ -23,6 +23,7 @@ jobs:
         run: |
           rm -rf ~/.buildozer/android/packages
           rm -rf ~/.buildozer/android/platform
+          rm -rf ~/.buildozer/android/build
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -35,20 +36,10 @@ jobs:
           pip install --no-cache-dir buildozer cython==0.29.33
 
       - name: Build APK
-        run: |
-          buildozer android debug --verbose
-          echo "=== Проверка папки bin ==="
-          ls -la bin/ || echo "Папка bin не существует"
-          if ls bin/*.apk 1> /dev/null 2>&1; then
-            echo "✅ APK найден!"
-          else
-            echo "❌ APK НЕ НАЙДЕН!"
-            exit 1
-          fi
+        run: buildozer android debug --verbose
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: obd2-apk
           path: bin/*.apk
-        if: success()
