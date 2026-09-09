@@ -4,21 +4,51 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    container:
-      image: kivy/buildozer:latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            git zip unzip openjdk-17-jdk python3-pip \
+            autoconf libtool pkg-config zlib1g-dev \
+            libncurses5-dev libncursesw5-dev libtinfo5 \
+            cmake libffi-dev libssl-dev
+
+      - name: Clean Buildozer cache
+        run: |
+          rm -rf ~/.buildozer/android/packages
+          rm -rf ~/.buildozer/android/platform
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Buildozer
+        run: |
+          pip install --upgrade pip
+          pip install --no-cache-dir buildozer cython==0.29.33
+
       - name: Build APK
         run: |
-          export BUILD_OZDROID=1
-          yes | buildozer android debug
+          buildozer android debug --verbose
+          echo "=== Проверка папки bin ==="
+          ls -la bin/ || echo "Папка bin не существует"
+          if ls bin/*.apk 1> /dev/null 2>&1; then
+            echo "✅ APK найден!"
+          else
+            echo "❌ APK НЕ НАЙДЕН!"
+            exit 1
+          fi
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: obd2-apk
           path: bin/*.apk
+        if: success()
