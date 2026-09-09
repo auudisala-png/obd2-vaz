@@ -7,14 +7,19 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 
 version = 0.1
-requirements = python3,kivy,jnius
+requirements = python3,kivy
 
-android.permissions = INTERNET,BLUETOOTH,BLUETOOTH_ADMIN,BLUETOOTH_CONNECT,BLUETOOTH_SCAN,ACCESS_FINE_LOCATION
+android.permissions = INTERNET,BLUETOOTH
 android.api = 30
 android.minapi = 21
 android.ndk = 25b
-android.arch = arm64-v8a
-android.skip_python_tests = True
-
-android.gradle_dependencies = 'com.android.support:support-annotations:28.0.0'
+android.sdk = 30
 android.accept_sdk_license = True
+
+# ДОБАВЬ ЭТИ СТРОКИ:
+android.gradle_dependencies = ''
+android.enable_androidx = True
+android.use_androidx = True
+
+[buildozer]
+log_level = 2
