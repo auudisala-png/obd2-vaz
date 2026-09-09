@@ -21,9 +21,8 @@ jobs:
 
       - name: Clean Buildozer cache
         run: |
-          rm -rf ~/.buildozer/android/packages
-          rm -rf ~/.buildozer/android/platform
-          rm -rf ~/.buildozer/android/build
+          rm -rf ~/.buildozer
+          rm -rf .buildozer
 
       - name: Setup Python
         uses: actions/setup-python@v4
