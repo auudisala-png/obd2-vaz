@@ -19,10 +19,12 @@ jobs:
             libncurses5-dev libncursesw5-dev libtinfo5 \
             cmake libffi-dev libssl-dev
 
-      - name: Clean Buildozer cache
+      - name: FULL Clean Buildozer cache
         run: |
           rm -rf ~/.buildozer
           rm -rf .buildozer
+          rm -rf ~/.local/share/buildozer
+          rm -rf ~/.cache/pip
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -33,6 +35,15 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install --no-cache-dir buildozer cython==0.29.33
+
+      - name: FORCE FIX - Patch buildozer.spec
+        run: |
+          echo "=== ПРОВЕРЯЕМ buildozer.spec ==="
+          cat buildozer.spec | grep requirements
+          echo "=== ЗАМЕНЯЕМ requirements ==="
+          sed -i 's/requirements = .*/requirements = python3,kivy/g' buildozer.spec
+          echo "=== ПРОВЕРЯЕМ ПОСЛЕ ЗАМЕНЫ ==="
+          cat buildozer.spec | grep requirements
 
       - name: Build APK
         run: buildozer android debug --verbose
